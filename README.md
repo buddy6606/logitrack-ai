@@ -269,12 +269,22 @@ The seeder initializes the database with ready-to-test profiles representing eac
 > **Free Hosting Options (For Judges):** 
 > *   **Hugging Face Spaces (Recommended Card-Free):** If deployed using our newly added backend `Dockerfile` on Hugging Face, the server **remains online 24/7** and does not go to sleep! Actions and WebSocket map telemetry respond instantly.
 > *   **Render (Free Tier):** If deployed on Render, the backend automatically goes to sleep after 15 minutes of inactivity. When launching the live website for the first time, **please allow ~50 seconds** for the backend server to wake up and connect the real-time Socket.IO channels. Once active, all dispatches respond instantly.
-
 *   **GPS Simulation Range:** The GPS simulation for agents runs inside their mobile portal (client-side simulation). Leaving the Agent portal tab open allows the simulated truck to proceed along the OSRM path, updating the live map.
 *   **Sandbox Payments:** Checkout utilizes a simulated payment processor. Transaction IDs are randomly generated for simulation purposes; no payment gateways are integrated.
 *   **Firebase CORS:** Ensure your Firebase Storage rules allow CORS if uploading custom product pictures from local environments.
+*   **Firebase / Firestore Quota limits:**
+    > [!WARNING]
+    > If the web application displays **"wrong credentials"** when signing in with the demo profiles or if requests fail in the browser console with a **500 (Internal Server Error)** status code, the default shared sandbox database may have exceeded its daily free Firestore operations quota (`ResourceExhausted: 429 Quota exceeded`).
+    > 
+    > **How to fix this:**
+    > 1. Go to the [Firebase Console](https://console.firebase.google.com/) and create your own free Firebase project.
+    > 2. Enable **Firestore Database** (in test mode) and **Authentication** (enable Email/Password provider).
+    > 3. Go to **Project Settings > Service Accounts**, click **Generate new private key**, and download the key as a JSON file.
+    > 4. Rename the downloaded file to `firebase-service-account.json` and replace the one located inside your `backend/` directory.
+    > 5. Seed your private database by running `python seed_data.py` inside the `backend/` directory, and restart your server with `uvicorn main:combined_app --reload --port 8000`.
 
 ---
+
 
 ## 👥 DevFusion Team
 
